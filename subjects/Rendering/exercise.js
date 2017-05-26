@@ -28,14 +28,62 @@ const DATA = {
   ]
 }
 
+let foodType = 'mexican'
+let sortAsc = true
+
+function handleFoodTypeChange(e) {
+  foodType = e.target.value
+  updateThePage()
+}
+
+function handleSort() {
+  sortAsc = !sortAsc
+  updateThePage()
+}
+
 function Menu() {
+  // const items = DATA.items;
+  // const sortedItems = items.sort(sortBy('name'));
+
+  // const mexicanFood = sortedItems.filter((sortedItem) => {
+  //   return sortedItem.type === 'mexican';
+  // });
+
+  // const mappedFood = mexicanFood.map((mexicanFood) => {
+  //   return <li key={mexicanFood.id}>{mexicanFood.name}</li>
+  // });
+
+  const items = DATA.items
+  .filter((item) => {
+    // return item.type === 'mexican'
+    return item.type === foodType
+  })
+  .sort(sortBy(sortAsc ? 'name' : '-name'))
+  .map((item) => {
+      return <li key={item.id}>{item.name}</li>
+    })
+
   return (
     <div>
-      Open the console, you have failing tests.
+      <h1>{DATA.title}</h1>
+      <select onChange={handleFoodTypeChange}>
+        <option>mexican</option>
+        <option>english</option>
+      </select>
+      <button onClick={handleSort}>Toggle Sort</button>
+      <ul>
+        {items}
+      </ul>
     </div>
   )
 }
 
-ReactDOM.render(<Menu/>, document.getElementById('app'), () => {
-  require('./tests').run()
-})
+updateThePage()
+
+function updateThePage() {
+  ReactDOM.render(<Menu/>, document.getElementById('app')
+  //   , () => {
+  //   require('./tests').run()
+  // }
+  )
+}

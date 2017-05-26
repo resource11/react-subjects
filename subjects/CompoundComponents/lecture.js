@@ -205,26 +205,26 @@ ReactDOM.render(<App/>, document.getElementById('app'))
 //    )
 //  }
 //
-//  render() {
-//    const tabs = (
-//      <div key="tabs" style={styles.tabs}>
-//        {this.renderTabs()}
-//      </div>
-//    )
-//    const panel = (
-//      <div key="panel" style={styles.tabPanels}>
-//        {this.renderPanel()}
-//      </div>
-//    )
-//    return (
-//      <div>
-//        {this.props.tabsPlacement === 'top' ?
-//          [tabs, panel] :
-//          [panel, tabs]
-//        }
-//      </div>
-//    )
-//  }
+ // render() {
+ //   const tabs = (
+ //     <div key="tabs" style={styles.tabs}>
+ //       {this.renderTabs()}
+ //     </div>
+ //   )
+ //   const panel = (
+ //     <div key="panel" style={styles.tabPanels}>
+ //       {this.renderPanel()}
+ //     </div>
+ //   )
+ //   return (
+ //     <div>
+ //       {this.props.tabsPlacement === 'top' ?
+ //         [tabs, panel] :
+ //         [panel, tabs]
+ //       }
+ //     </div>
+ //   )
+ // }
 //}
 //
 //class App extends React.Component {
@@ -261,12 +261,12 @@ ReactDOM.render(<App/>, document.getElementById('app'))
 
 //class TabList extends React.Component {
 //  render() {
-//    const children = React.Children.map(this.props.children, (child, index) => {
-//      return React.cloneElement(child, {
-//        isActive: index === this.props.activeIndex,
-//        onClick: () => this.props.onActivate(index)
-//      })
-//    })
+   // const children = React.Children.map(this.props.children, (child, index) => {
+   //   return React.cloneElement(child, {
+   //     isActive: index === this.props.activeIndex,
+   //     onClick: () => this.props.onActivate(index)
+   //   })
+   // })
 //
 //    return <div style={styles.tabs}>{children}</div>
 //  }
@@ -323,10 +323,10 @@ ReactDOM.render(<App/>, document.getElementById('app'))
 //        return child
 //      }
 //    })
-//
+
 //    return <div>{children}</div>
 //  }
-//}
+// }
 //
 //class App extends React.Component {
 //  render() {

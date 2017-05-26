@@ -29,6 +29,29 @@
 // - Arrow right, arrow down should select the next option
 // - Arrow left, arrow up should select the previous option
 ////////////////////////////////////////////////////////////////////////////////
+
+
+
+// **************
+// more notes about arrays in ternary like
+
+// isThing? [tab, panel] : [panel, tab]
+
+// arrays are flattened in that ternary
+
+// React.createElement('div', {}, [thing1, thing2], moreStuff)
+
+// function add(...args) {
+//   const numbers = flatten(args)
+//   return sum(numbers)
+// }
+
+// add([ 1, 3 ], 2)
+// add([ 1, 2 ])
+
+
+
+
 import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 
@@ -37,8 +60,28 @@ class RadioGroup extends React.Component {
     defaultValue: PropTypes.string
   }
 
+  state = {
+    value: this.props.defaultValue // why are we using props to set state? This may be the starting state, and it's passed down from the parent?
+  }
+
+  // // handler for selecting value. Takes value as parameter, sets state of this.state.value to value, calls anonymous function to handle onChange and passes in this.state.value.
+  // select(value) {
+  //   this.setState({ value }, () => {
+  //     this.props.onChange(this.state.value)
+  //   })
+  // }
+
+  // look at the child value of isSelected and compare it to this component's state.value. If true, set to true. onClick grabs child props and changes the state according to child props value (the RadioOption value)
   render() {
-    return <div>{this.props.children}</div>
+    const children = React.Children.map(this.props.children, (child) => (
+      React.cloneElement(child, {
+        isSelected: this.state.value === child.props.value,
+        // onClick: () => this.select(child.props.value)
+        onClick: () => this.setState({ value: child.props.value })
+      })
+    ))
+
+    return <div>{children}</div>
   }
 }
 
@@ -49,8 +92,8 @@ class RadioOption extends React.Component {
 
   render() {
     return (
-      <div>
-        <RadioIcon isSelected={false}/> {this.props.children}
+      <div onClick={this.props.onClick}>
+        <RadioIcon isSelected={this.props.isSelected}/> {this.props.children}
       </div>
     )
   }
@@ -80,12 +123,25 @@ class RadioIcon extends React.Component {
 }
 
 class App extends React.Component {
+  state = {
+    radioValue: 'fm'
+  }
+
+  //the state of this component is bubbled up from the children
+
   render() {
     return (
       <div>
         <h1>♬ It's about time that we all turned off the radio ♫</h1>
 
-        <RadioGroup defaultValue="fm">
+        <h2>Radio Value: {this.state.radioValue}</h2>
+
+        <RadioGroup
+          defaultValue={this.state.radioValue} // pass this down to RadioGroup
+          onChange={(radioValue) => this.setState( { radioValue })}
+          // how does this change? This is the parent.
+          // we want RadioGroup to own some state
+        >
           <RadioOption value="am">AM</RadioOption>
           <RadioOption value="fm">FM</RadioOption>
           <RadioOption value="tape">Tape</RadioOption>

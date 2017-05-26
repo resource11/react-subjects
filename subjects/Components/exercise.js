@@ -35,17 +35,49 @@ styles.panel = {
 }
 
 class Tabs extends React.Component {
+
+  // // older syntax
+  // constructor {
+  //   super()
+  //   this.state {
+  //     ...
+  //   }
+  //   this.handleClick() = () => {
+  //     ...
+  //   }
+  // }
+
+  // is now...
+  state = {
+    // activeIndex: 0
+    activeIndex: parseInt(localStorage.activeIndex || '0', 10)
+  }
+
+  handleClick = (index) => {
+    // const index = parseInt(e.target.getAttribute('data-index')) // this is the old way
+    this.setState({ activeIndex: index })
+    localStorage.setItem('activeIndex', index) // how do we store activeIndex into localStorage? look this up
+  }
+  // woo hoo!
+
   render() {
     return (
       <div className="Tabs">
-        <div className="Tab" style={styles.activeTab}>
-          Active
-        </div>
-        <div className="Tab" style={styles.tab}>
-          Inactive
-        </div>
+        {this.props.data.map((item, index) => {
+          const isActive = this.state.activeIndex === index
+          return (
+            <div
+              key={item.id}
+              className="Tab"
+              style={isActive ? styles.activeTab : styles.tab}
+              onClick={() => this.handleClick(index)} // pass in the index to set the current tab on click
+            >
+            { item.name }
+          </div>
+            )
+        })}
         <div className="TabPanel" style={styles.panel}>
-          Panel
+          {this.props.data[this.state.activeIndex].description}
         </div>
       </div>
     )

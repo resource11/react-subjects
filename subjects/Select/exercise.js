@@ -17,13 +17,32 @@ class Select extends React.Component {
     defaultValue: any
   }
 
+  state = {
+    isOpen: false,
+    value: this.props.defaultValue
+  }
+
+  handleSelect() {
+
+  }
+
+  renderChildren() {
+    return React.Children.map(this.props.children, (child) => (
+      React.cloneElement(child, {
+        onSelect: (value) => this.handleSelect(value)
+      })
+    ))
+  }
+
   render() {
     return (
       <div className="select">
         <div className="label">label <span className="arrow">▾</span></div>
-        <div className="options">
-          {this.props.children}
-        </div>
+        {this.state.isOpen && (
+          <div className="options">
+            {this.props.children}
+          </div>
+        )}
       </div>
     )
   }
