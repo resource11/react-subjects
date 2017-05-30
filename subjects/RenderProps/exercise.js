@@ -141,13 +141,13 @@ class GeoAddress extends React.Component {
     children: PropTypes.func.isRequired
   }
 
-  // another way to do static propTypes
-  static propTypes = {
-    coords: PropTypes.object.
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-    children: PropTypes.func.isRequired
-  }
+  // // another way to do static propTypes
+  // static propTypes = {
+  //   coords: PropTypes.object.
+  //   latitude: PropTypes.number,
+  //   longitude: PropTypes.number,
+  //   children: PropTypes.func.isRequired
+  // }
 
 
   state = { address: null }

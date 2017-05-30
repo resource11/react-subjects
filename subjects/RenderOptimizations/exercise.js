@@ -23,21 +23,50 @@ class RainbowList extends React.Component {
     renderRowAtIndex: PropTypes.func.isRequired
   }
 
+  state = {
+    scrollY: 0,
+    availableHeight: window.innerHeight
+  }
+
+  componentDidMount() {
+    this.setState({
+      availableHeight: this.node.clientHeight
+    })
+  }
+
+  handleScroll = (e) => {
+    this.setState({
+      scrollY: e.target.scrollTop
+    })
+  }
+
+
   render() {
+    const { scrollY, availableHeight } = this.state
     const { numRows, rowHeight, renderRowAtIndex } = this.props
     const totalHeight = numRows * rowHeight
 
+    const scrollBottom = scrollY + availableHeight
+    const startIndex = Math.max(0, Math.floor(scrollY / rowHeight) - 20)
+    const endIndex = Math.min(numRows, Math.ceil(scrollBottom/rowHeight) + 20)
+    // const endIndex = startIndex  + howManyFit
+
+
     const items = []
 
-    let index = 0
-    while (index < numRows) {
+    let index = startIndex
+    while (index < endIndex) {
       items.push(<li key={index}>{renderRowAtIndex(index)}</li>)
       index++
     }
 
     return (
-      <div style={{ height: '100%', overflowY: 'scroll' }}>
-        <ol style={{ height: totalHeight }}>
+      <div
+        onScroll={this.handleScroll}
+        style={{ height: '100%', overflowY: 'scroll' }}
+        ref={node => this.node = node}
+      >
+        <ol style={{ height: totalHeight, paddingTop: startIndex * rowHeight }}>
           {items}
         </ol>
       </div>
@@ -47,7 +76,7 @@ class RainbowList extends React.Component {
 
 ReactDOM.render(
   <RainbowList
-    numRows={500}
+    numRows={50000}
     rowHeight={RainbowListDelegate.rowHeight}
     renderRowAtIndex={RainbowListDelegate.renderRowAtIndex}
   />,
